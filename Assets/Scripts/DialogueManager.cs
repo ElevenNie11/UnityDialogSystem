@@ -25,6 +25,15 @@ public class DialogueManager : MonoBehaviour
         dialoguePanel.SetActive(false);
     }
 
+    //按 T 键开始进行测试跑对话
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            StartDialogue();
+        }
+    }
+
     //把.txt文本文件里的内容解析成一个个的DialogueLine对象，存入dialogueLines列表里
     //按行拆开，每行再按"|"拆开，前面是说话人，后面是内容
     private void ParseText()
