@@ -311,7 +311,7 @@ GameObject:
   - component: {fileID: 365015543}
   - component: {fileID: 365015542}
   m_Layer: 5
-  m_Name: Player02
+  m_Name: "\u65C5\u4EBA"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -556,7 +556,7 @@ GameObject:
   - component: {fileID: 484416150}
   - component: {fileID: 484416149}
   m_Layer: 5
-  m_Name: Player01
+  m_Name: "\u4F4F\u6301"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -847,6 +847,10 @@ MonoBehaviour:
   contentText: {fileID: 1655591172}
   dialoguePanel: {fileID: 2054685362}
   typeSpeed: 0.03
+  speakerObjects:
+  - {fileID: 484416147}
+  - {fileID: 365015540}
+  dimAlpha: 0.731
 --- !u!4 &1330603345
 Transform:
   m_ObjectHideFlags: 0
@@ -896,8 +900,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 44.6593, y: -0.3814}
-  m_SizeDelta: {x: 1483.5808, y: 224.1293}
+  m_AnchoredPosition: {x: -38.2593, y: -9.5024}
+  m_SizeDelta: {x: 899.8337, y: 222.4709}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1655591172
 MonoBehaviour:

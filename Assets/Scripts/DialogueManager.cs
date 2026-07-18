@@ -3,6 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;   //角色高亮必须要用上
 using TMPro;            //显示文字必须要用上
+
+
+//可以在Inspector面板里配置的"名字-颜色"对应关系
+//[System.Serializable]让C#的普通[类]能在Inspector里展开显示、可编辑
+[System.Serializable]
+public class SpeakerColor
+{
+    public string speakerName;          //说话人名字
+    public Color color = Color.black;   //说话人对应的颜色
+}
+
+
 //  最简版对话系统，只做三件事：
 //  1. 用 TextAsset 读取纯文本文件，一行一句对话
 //  2. 按 "|" 把每行拆成：[说话人] 和 [内容]
@@ -20,7 +32,8 @@ public class DialogueManager : MonoBehaviour
     public GameObject[] speakerObjects; //参与对话的角色高亮显示
     [Range(0, 1)]
     public float dimAlpha = 0.4f; //不说话的角色透明度: 0是全透明，1是完全不变暗
-
+    [Header("说话人颜色配置")]
+    public SpeakerColor[] speakerColors; //在Inspector里逐个添加说话人和颜色
     //解析以后的对话数据保存在一个列表List里
     // DialogueLine 是一个自定义的类，里面有两个字段：说话人speaker和内容content
     private List<DialogueLine> dialogueLines = new List<DialogueLine>();
@@ -130,6 +143,7 @@ public class DialogueManager : MonoBehaviour
     //打字机效过果的协程：把一行对话的内容一个字一个字显示出来
     private IEnumerator TypeOneLine(DialogueLine line)
     {
+        contentText.color = GetColorForSpeaker(line.speaker);//先把整句话的颜色设置好
         contentText.text = ""; //先清空文本框
         //字符串本质是char数组，可以直接用foreach一个字一个字取出来
         foreach (char c in line.content)
@@ -139,6 +153,18 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+
+    private Color GetColorForSpeaker(string speaker)
+    {
+        foreach (SpeakerColor sc in speakerColors)
+        {
+            if(sc.speakerName == speaker)
+            {
+                return sc.color;   //找到匹配的名字，返回配置好的颜色
+            }
+        }
+        return Color.black;       //默认文本颜色
+    }
 
     //检查按键
     private IEnumerator WaitForClick()
