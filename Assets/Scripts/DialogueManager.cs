@@ -22,6 +22,7 @@ public class DialogueManager : MonoBehaviour
     public float dimAlpha = 0.4f; //不说话的角色透明度: 0是全透明，1是完全不变暗
 
     //解析以后的对话数据保存在一个列表List里
+    // DialogueLine 是一个自定义的类，里面有两个字段：说话人speaker和内容content
     private List<DialogueLine> dialogueLines = new List<DialogueLine>();
     
 
@@ -54,9 +55,14 @@ public class DialogueManager : MonoBehaviour
         foreach (string row in rows)
         {
             string trimmedRow = row.Trim(); //去掉首尾空格
-            if (string.IsNullOrEmpty(trimmedRow))  continue; //如果这一行是空的 -> 跳过这一行  
+            if (string.IsNullOrEmpty(trimmedRow))  continue; //如果这一行是空的 -> 跳过这一行
+
             string[] parts = trimmedRow.Split('|'); //按"|"拆开: 把 "村长|你好" 拆成 ["村长", "你好"] 
-            dialogueLines.Add(new DialogueLine(parts[0], parts[1])); //把拆开的说话人和内容传给DialogueLine类，生成一个对象，存入列表
+
+            string speakerName = parts[0].Trim(); //说话人名字两端可能带空格，必须单独Trim一次
+            string content = parts[1].Trim();     //说话内容两端也可能带空格，一起处理掉
+            
+            dialogueLines.Add(new DialogueLine(speakerName, content)); //把处理好的说话人和内容传给DialogueLine类，生成一个对象，存入列表
         }
     }
 
@@ -64,7 +70,7 @@ public class DialogueManager : MonoBehaviour
     //外部调用这个方法就能开始播放对话，比如按 T 键测试
     public void StartDialogue()
     {
-        dialoguePanel.SetActive(true); //显示对话框
+        dialoguePanel.SetActive(true);  //显示对话框
         StartCoroutine(PlayAllLines()); //播放对话
     }
 
@@ -110,7 +116,9 @@ public class DialogueManager : MonoBehaviour
             if(obj == null) continue;
             Image img = obj.GetComponent<Image>();
             if (img == null)  continue;
-            
+            //obj.name 是 GameObject 自带的一个属性（Unity内置）
+            //不用手动赋值，就是我们在 Hierarchy 面板里看到的那个物体名字
+            //speaker 字段是单独放在 DialogueData.cs 里的
             bool isSpeaking = obj.name == speaker; //判断这个角色是不是当前文本中规定应该说话的角色
             Color c = img.color;  //先取出当前角色的颜色（里面包含透明度）
             c.a = isSpeaking ? 1f : dimAlpha; //如果是当前说话角色就不变暗，否则就变暗
