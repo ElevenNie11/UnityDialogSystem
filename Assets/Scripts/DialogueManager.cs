@@ -26,6 +26,7 @@ public class DialogueManager : MonoBehaviour
     [Header("UI组件")]
     public TMP_Text contentText;      //显示对话内容的文本UI组件
     public GameObject dialoguePanel;  //对话面板UI组件
+    public GameObject hintText;       //操作提示UI组件
     [Header("打字机效果: 数字越小打字越快")]
     public float typeSpeed = 0.03f; //打字机效果的速度
     [Header("参与对话的角色")]
@@ -45,6 +46,11 @@ public class DialogueManager : MonoBehaviour
         ParseText();
         //一开始先把对话框隐藏起来，等玩家触发对话时才显示
         dialoguePanel.SetActive(false);
+        //游戏一开始就显示操作提示，告诉玩家该怎么触发和进行对话
+        if (hintText != null)
+        {
+            hintText.SetActive(true);
+        }
     }
 
 
@@ -83,6 +89,10 @@ public class DialogueManager : MonoBehaviour
     //外部调用这个方法就能开始播放对话，比如按 T 键测试
     public void StartDialogue()
     {
+        if(hintText != null)
+        {
+            hintText.SetActive(false); //对话开始后就把操作提示隐藏掉
+        }
         dialoguePanel.SetActive(true);  //显示对话框
         StartCoroutine(PlayAllLines()); //播放对话
     }
